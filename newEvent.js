@@ -29,12 +29,11 @@ const querySnapshot = await getDocs(collection(db, "Event"));
 let events = [];
 querySnapshot.forEach((doc) => {
   // doc.data() is never undefined for query doc snapshots
-  console.log(doc.id, " => ", doc.data());
+  //console.log(doc.id, " => ", doc.data());
   let event = doc.data();
   event[id] = doc.id;
   events.push(event);
 });
-console.log(events);
 
 var app = new Vue({
     el: '#app',
@@ -106,7 +105,6 @@ var app = new Vue({
               type: this.type,
               priority: this.priority,
               related_events: related_events2
-              // TODO: alert calls to quicklly
             }).then(/*alert("Event created"), *//*location.reload()*/ console.log("potem"));
             console.log("Document written with ID: ", this.id);
             alert("Event created");

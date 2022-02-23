@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Vuejs-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--<script src="https://unpkg.com/vue@3"></script>-->
+
+    <!--vue multiselect-->
+    <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+    
+    <!-- Bootstrap css-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <!--App-->
+    <script type="module" defer type="application/javascript" src="app.js"></script>
+
+    <!-- My css-->
+    <link rel="stylesheet" href="./style.css">
+
+    <title>Events7</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div id="app" v-cloak>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6" style="margin:auto; margin-top:50px; margin-bottom:50px; text-align:center">
+                <input v-model="search" class="form-control" type="search" @keyup="updateSearchEvents()" placeholder="Search">
+            </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Priority</th>
+                            <th>Related events</th>
+                            
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="event in searchEvents" :key="event.id">
+                            <template v-if="!changes[event.id]">
+                                <td>{{event.id}}</td>
+                                <td>{{event.name}}</td>
+                                <td>{{event.description}}</td>
+                                <td>{{event.type}}</td>
+                                <td>{{event.priority}}</td>
+                                <td v-if="event.related_events != ''">{{event.related_events.join(', ')}}</td>
+                                <td v-else>No related events</td>
+                                <td v-if="!changes[event.id]" ><button class="btn btn-primary" @click="edit(event.id)" style="margin-bottom: 3px;">Edit</button>
+                                    <button class="btn btn-danger">Remove</button></td>
+                                <td v-else><button class="btn btn-primary" @click="confirm(event)">Confirm</button></td>
+                                
+                            </template>
+                            <template v-else>
+                                <!--TODO: allow id change ()-->
+                                <!--<td><input class=" form-control bg-transparent" type="text" v-model="event.id" ></td>
+                                <td><input class=" form-control bg-transparent" type="text" v-model="event.name" ></td>
+                                <td><textarea class=" form-control bg-transparent" v-model="event.description"></textarea></td>-->
+                                <td>{{event.id}}</td>
+                                <td contenteditable="true">{{event.name}}</td>
+                                <td contenteditable="true">{{event.description}}</td>
+                                <td><multiselect v-model="event.type" deselect-label="Can't remove this value"  placeholder="Select one" :options="types" :searchable="false" :allow-empty="false"></td>
+                                <td><multiselect class="bg-transparent" v-model="event.priority" deselect-label="Can't remove this value"  placeholder="Select one" :options="priorities" :searchable="false" :allow-empty="false"></td>
+                                <td ><multiselect v-model="event.related_events" :options="names" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some">
+                                        <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
+                                    </multiselect>
+                                </td>
+                                <td><button class="btn btn-primary"  @click="confirm(event)" style="margin-bottom: 3px;">Confirm</button>
+                                    <button class="btn btn-danger">Remove</button></td>
+                                
+                            </template>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
