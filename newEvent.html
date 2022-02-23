@@ -8,8 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!--<script src="https://unpkg.com/vue@3"></script>-->
 
-    <!--<script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
-    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">-->
+    <!--vue multiselect-->
     <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
     <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
     
@@ -17,84 +16,79 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
     <!--App-->
-    <script defer type="application/javascript" src="app.js"></script>
+    <script type="module" defer type="application/javascript" src="app.js"></script>
+
+    <!-- My css-->
+    <link rel="stylesheet" href="./newEvent.css">
 
     <title>Events7</title>
-    <style>
-        [v-cloak] {
-            display: none;
-        }
-    </style>
+    
   </head>
   <body>
 
     <div id="app" v-cloak>
       <div class="container">
         
-        <!--<p><label>Id</label><br/><input placeholder="Id"></p>
-        <p><label>Name</label><br/><input placeholder="Name"></p>
-        <p><label>Title</label><br/><textarea></textarea></p>
-        <p><label>Title</label><br/><input placeholder="Type"></p>
-        <p><label>Title</label><br/><input placeholder="Priority"></p>
-        <p><label>Title</label><br/><input placeholder="Related-events"></p>
-
-        <button>Create new event</button>-->
         <div class="col-md-8" style="margin:auto;">
         <div class="row">
           <div class="form-group col-md-4">
             <label for="id">Id</label>
-            <input type="number" class="form-control" id="id" style="max-width:100%;">
+            <input v-model="id" type="text" class="form-control" id="id" style="max-width:100%;">
+            <label class="text-warning" style="font-size: 14px;">{{idErr}}</label>
           </div>
           <div class="form-group col-md-8">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name">
+            <input v-model="name" type="text" class="form-control" id="name">
+            <label class="text-warning" style="font-size: 14px;">{{nameErr}}</label>
           </div>
         </div>
         
         <div >
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <textarea v-model="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <label class="text-warning" style="font-size: 14px; margin-bottom:0;">{{descriptionErr}}</label>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-md-4">
-            <!--TODO: display only choices-->
             <label for="priority">Priority</label>
-            <multiselect v-model="priority" deselect-label="Can't remove this value"  placeholder="Select one" :options="priorities" :searchable="false" :allow-empty="true">
+            <multiselect v-model="priority" deselect-label="Can't remove this value"  placeholder="Select one" :options="priorities" :searchable="false" :allow-empty="false">
           </div>
           <div class="form-group col-md-8">
             <label for="type">Type</label>
-            <input type="text" class="form-control" id="type">
+            <multiselect v-model="type" deselect-label="Can't remove this value"  placeholder="Select one" :options="types" :searchable="false" :allow-empty="false">
           </div>
         </div>
         
         <div class="form-group">
           <div>
-            <label class="typo__label">Simple select / dropdown</label>
-            <multiselect v-model="related" :options="events" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name" :preselect-first="true">
+            <label class="typo__label">Related events</label>
+            <multiselect v-model="related" :options="events" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name">
               <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
             </multiselect>
             <!--<multiselect v-model="related" :options="events"></multiselect>
             <pre class="language-json"><code>{{ related  }}</code></pre>-->
           </div>
+        </div class="row">
+
+        <div class="button-align">
+          <button @click="insertEventDB()" type="submit" class="btn btn-primary">Submit</button>
+          <button class="btn btn-secondary">Cancel</button>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
       </div>
         
       <div>
     </div>
 
-  <!-- New step!
-     Add Multiselect CSS. Can be added as a static asset or inside a component. -->
-     <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="application/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script type="application/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
   </body>
+  
+ 
 </html>

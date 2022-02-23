@@ -1,0 +1,10 @@
+.button-align{
+    text-align: center;
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 50px;
+}
+
+[v-cloak] {
+    display: none;
+}
