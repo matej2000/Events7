@@ -8,3 +8,12 @@
 [v-cloak] {
     display: none;
 }
+
+.shadowB{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 30px;
+}
+
+body{
+    background-color: #f7f7f7;
+}

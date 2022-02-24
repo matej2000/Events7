@@ -62,7 +62,7 @@
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
-                    <thead>
+                    <thead class="thead-light">
                         <tr>
                             <th>Id</th>
                             <th>Name</th>
@@ -120,7 +120,7 @@
                                 <td contenteditable="true">{{event.description}}</td>
                                 <td><multiselect v-model="event.type" deselect-label="Can't remove this value"  placeholder="Select one" :options="types" :searchable="false" :allow-empty="false"></td>
                                 <td><multiselect class="bg-transparent" v-model="event.priority" deselect-label="Can't remove this value"  placeholder="Select one" :options="priorities" :searchable="false" :allow-empty="false"></td>
-                                <td ><multiselect v-model="event.related_events" :options="names" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some">
+                                <td ><multiselect v-model="event.related_events" :options=" validRelatedNames(event)" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some">
                                         <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
                                     </multiselect>
                                 </td>
@@ -132,7 +132,7 @@
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Remove {{event.name}}</h5>
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Remove event</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
