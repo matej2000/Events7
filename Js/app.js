@@ -1,23 +1,17 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
 import { collection, addDoc, getFirestore, doc, setDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+import {firebaseHelper} from "./firebaseHelper.js"
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: "AIzaSyDvfMup52PvgCmOkM-g8q3qKWLyUc-Upwg",
-    authDomain: "events7-746d1.firebaseapp.com",
-    projectId: "events7-746d1",
-    storageBucket: "events7-746d1.appspot.com",
-    messagingSenderId: "947986393601",
-    appId: "1:947986393601:web:81a5920705a0b84bbd2e00",
-    measurementId: "G-4QF94GN2TZ"
-};
+let fire = new firebaseHelper();
 
 // Initialize Firebase
-const app2 = initializeApp(firebaseConfig);
+const app2 = initializeApp(fire.firebaseConfig);
 const analytics = getAnalytics(app2);
 const db = getFirestore();
 
