@@ -35,6 +35,8 @@
     <div id="app" v-cloak>
         
         <div class="container">
+        
+
             <div class="row">
                 <div class="col-md-6" style="margin:auto; margin-top:50px; margin-bottom:50px; text-align:center">
                 <input v-model="search" class="form-control" type="search" @keyup="updateSearchEvents()" placeholder="Search">
@@ -64,9 +66,30 @@
                                 <td>{{event.priority}}</td>
                                 <td v-if="event.related_events != ''">{{event.related_events.join(', ')}}</td>
                                 <td v-else>No related events</td>
-                                <td v-if="!changes[event.id]" ><button class="btn btn-primary" @click="edit(event.id)" style="margin-bottom: 3px;">Edit</button>
-                                    <button class="btn btn-danger">Remove</button></td>
-                                <td v-else><button class="btn btn-primary" @click="confirm(event)">Confirm</button></td>
+                                <td><button class="btn btn-primary" @click="edit(event.id)" style="margin-bottom: 3px;">Edit</button>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAlert">Remove</button>                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="deleteAlert" tabindex="-1" role="dialog" aria-labelledby="deleteAlert" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Remove {{event.name}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            Are you sure you want to remove this event?
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary" @click="deleteEventDB(event.id) " data-dismiss="modal">Remove</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </td>
                                 
                             </template>
                             <template v-else>
@@ -84,7 +107,29 @@
                                     </multiselect>
                                 </td>
                                 <td><button class="btn btn-primary"  @click="confirm(event)" style="margin-bottom: 3px;">Confirm</button>
-                                    <button class="btn btn-danger">Remove</button></td>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAlert">Remove</button>                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="deleteAlert" tabindex="-1" role="dialog" aria-labelledby="deleteAlert" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Remove {{event.name}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            Are you sure you want to remove this event?
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary" @click="deleteEventDB(event.id)">Remove</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </td>
                                 
                             </template>
                         </tr>

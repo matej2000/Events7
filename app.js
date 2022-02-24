@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
-import { collection, addDoc, getFirestore, doc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+import { collection, addDoc, getFirestore, doc, setDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,8 +26,6 @@ let events = [];
 let changes = {};
 let names = [];
 querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    //console.log(doc.id, " => ", doc.data());
     let event = doc.data();
     event["related_events"] = event["related_events"].split(",");
     
@@ -70,9 +68,8 @@ var app = new Vue({
 
         updateSearchEvents(){
             this.searchEvents = [];
-            console.log(this.search);
             for (let event of this.events){
-              if(event.name.includes(this.search)){
+              if(event.name.toLowerCase().includes(this.search.toLowerCase())){
                 this.searchEvents.push(event);
               }
             }
@@ -82,7 +79,7 @@ var app = new Vue({
             return event.related_events.split(",");
         }*/
 
-        vlidRelatedNames(event){
+        /*vlidRelatedNames(event){
             let newEvents = [];
             for(let name of this.names){
                 if(name != event.name){
@@ -90,7 +87,7 @@ var app = new Vue({
                 }
             }
             return newEvents;
-        },
+        },*/
         
         async updateEventDB(event){
             
@@ -110,6 +107,30 @@ var app = new Vue({
                 console.error("Error adding document: ", e);
             }
             
+        },
+
+        async deleteEventDB(id){
+            try{
+                await deleteDoc(doc(db, "Event", id));
+                alert("Event deleted successfully");
+                this.removeEventFromArray(id);
+            } catch (e){
+                alert("Error: " + e);
+                console.error("Error deleting document: ", e);
+            }
+
+        },
+
+        removeEventFromArray(id){
+            for(let i = 0; i < this.events.length; i++){
+                if(this.events[i].id === id){
+                    this.events.splice(i, 1);
+                    delete this.changes[i];
+                    this.updateSearchEvents();
+                    return;
+                }
+            }
+
         }
 
     }

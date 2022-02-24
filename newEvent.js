@@ -105,7 +105,7 @@ var app = new Vue({
               type: this.type,
               priority: this.priority,
               related_events: related_events2
-            }).then(/*alert("Event created"), *//*location.reload()*/ console.log("potem"));
+            });
             console.log("Document written with ID: ", this.id);
             alert("Event created");
             location.reload();
