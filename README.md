@@ -1,2 +1,2 @@
 # Events7
-Outfit 7 expertise test, frontend application.
+Outfit 7 expertise test. Event7 is a frontend aplication made with Vue.js (v2.6.14) framework (composition API). The data is stored in firebase, cloud firestore. To run the app, download and extract the repository. Make sure the game files are in the same directory as the server you're going to be running it on. You can use your own database by changing the parameters in firebaseConfig in ./Js/firebaseHelper.js.
