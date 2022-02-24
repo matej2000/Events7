@@ -9,13 +9,6 @@ input {
     -moz-box-sizing: border-box;
 }
 
-/*table{
-    table-layout: fixed;
-}*/
-
-/*td{
-    padding:0 !important;
-}*/
 .table-responsive { overflow-x: initial; }
 
 
@@ -28,8 +21,19 @@ input {
     background-color: transparent;
 }
 
+body{
+    background-color: #f7f7f7;
+}
 
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: white;
+ }
 
+.table-striped>tbody>tr:nth-child(even)>td, 
+.table-striped>tbody>tr:nth-child(even)>th {
+   background-color: #e9ecef;
+ }
 
 @media 
 only screen and (max-width: 760px),

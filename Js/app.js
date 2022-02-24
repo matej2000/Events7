@@ -54,13 +54,13 @@ var app = new Vue({
         
         };
     },
+    
     methods: {
         edit(id){
             this.changes[id] = true;
         },
 
         confirm(event){
-            // TODO: show error, check if data was changed and update database
             this.updateEventDB(event);
             this.changes[event.id] = false;
         },
@@ -86,7 +86,6 @@ var app = new Vue({
         },
         
         async updateEventDB(event){
-            
             try {
                 let a = collection(db, "Event");
                 let b = doc( a, event.id);
@@ -101,19 +100,16 @@ var app = new Vue({
                 alert("Error: " + e);
                 console.error("Error adding document: ", e);
             }
-            
         },
 
         async deleteEventDB(id){
             try{
                 await deleteDoc(doc(db, "Event", id));
-                alert("Event deleted successfully");
                 this.removeEventFromArray(id);
             } catch (e){
                 alert("Error: " + e);
                 console.error("Error deleting document: ", e);
             }
-
         },
 
         removeEventFromArray(id){
@@ -125,7 +121,6 @@ var app = new Vue({
                     return;
                 }
             }
-
         },
 
         eventsOnPageChange(){
@@ -133,7 +128,7 @@ var app = new Vue({
             this.updatePage();
         },
 
-        updatePage(actionName){
+        updatePage(){
             let firstEvent = (this.pageNumber-1) * this.eventsOnPage;
             this.page = this.searchEvents.slice(firstEvent, firstEvent + this.eventsOnPage);
         },

@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
     <!--App-->
-    <script type="module" defer type="application/javascript" src="app.js"></script>
+    <script type="module" defer type="application/javascript" src="./Js/app.js"></script>
 
     <!-- My css-->
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./Style/style.css">
 
     <title>Events7</title>
     <style>
@@ -53,8 +53,6 @@
           </nav>
         
         <div class="container">
-        
-
             <div class="row">
                 <div class="col-md-6" style="margin:auto; margin-top:50px; margin-bottom:50px; text-align:center">
                 <input v-model="search" class="form-control" type="search" @keyup="updateSearchEvents()" placeholder="Search">
@@ -70,8 +68,6 @@
                             <th>Type</th>
                             <th>Priority</th>
                             <th>Related events</th>
-                            
-
                         </tr>
                     </thead>
                     <tbody>
@@ -111,10 +107,6 @@
                                 
                             </template>
                             <template v-else>
-                                <!--TODO: allow id change ()-->
-                                <!--<td><input class=" form-control bg-transparent" type="text" v-model="event.id" ></td>
-                                <td><input class=" form-control bg-transparent" type="text" v-model="event.name" ></td>
-                                <td><textarea class=" form-control bg-transparent" v-model="event.description"></textarea></td>-->
                                 <td>{{event.id}}</td>
                                 <td contenteditable="true">{{event.name}}</td>
                                 <td contenteditable="true">{{event.description}}</td>
@@ -153,26 +145,21 @@
                         </tr>
                     </tbody>
                 </table>
-                <div v-if="page.length == 0">
-                    <p>No entries found.</p>
+                <div v-if="page.length == 0" style="margin-top:30px; margin-bottom: 100px; text-align:center;">
+                    <p>No entries found</p>
                 </div>
             </div>
-            <nav aria-label="pagenation">
+            <nav aria-label="pagenation" v-if="page.length != 0">
                 <ul class="pagination">
-                  <li class="page-item" v-bind:class="{ disabled: pageNumber==1}">
+                    <li class="page-item" v-bind:class="{ disabled: pageNumber==1}">
                     <a class="page-link" tabindex="-1" @click="previousPage()">Previous</a>
-                  </li>
-                  <!--<li class="page-item active"><a class="page-link">1 <span class="sr-only">(current)</span></a></li>
-                  <li class="page-item ">
-                    <a class="page-link">2 <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="page-item"><a class="page-link">3</a></li>-->
-                  <li class="page-item"  v-bind:class="{ disabled: pageNumber == maxPages()}">
+                    </li>
+                    <li class="page-item"  v-bind:class="{ disabled: pageNumber == maxPages()}">
                     <a class="page-link" @click="nextPage()">Next</a>
-                  </li>
-                  <li><multiselect class="bg-transparent" v-model="eventsOnPage" @input="eventsOnPageChange" deselect-label="Can't remove this value" :options="pageSelect" :searchable="false" :allow-empty="false"></multiselect></li>
+                    </li>
+                    <li><multiselect class="bg-transparent" v-model="eventsOnPage" @input="eventsOnPageChange" deselect-label="Can't remove this value" :options="pageSelect" :searchable="false" :allow-empty="false"></multiselect></li>
                 </ul>
-              </nav>
+            </nav>
         </div>
     </div>
 

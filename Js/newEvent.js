@@ -29,7 +29,7 @@ const querySnapshot = await getDocs(collection(db, "Event"));
 let events = [];
 querySnapshot.forEach((doc) => {
   let event = doc.data();
-  event[id] = doc.id;
+  event["id"] = doc.id;
   events.push(event);
 });
 
@@ -56,11 +56,11 @@ var app = new Vue({
         idErr: " ",
         nameErr: " ",
         descriptionErr: " "   
-
       };
     },
+
     methods: {
-      
+
       checkInputs(){
         const check = [this.id, this.name, this.description, this.type, this.priority];
         let index = [];
@@ -76,7 +76,6 @@ var app = new Vue({
             case 2: this.descriptionErr = "Invalid description"; break;
           }
         }
-
         if(!this.uniqueId()){
           this.idErr = "Id not unique";
         }
@@ -85,7 +84,6 @@ var app = new Vue({
 
       async insertEventDB(){
         if(this.checkInputs()){
-
           let related_events2 ="";
           if (this.related.length >0 ){
             related_events2 = this.related[0].name;
@@ -93,7 +91,6 @@ var app = new Vue({
               related_events2 += "," + this.related[i].name;
             }
           }
-          
           try {
             let a = collection(db, "Event");
             let b = doc( a, this.id);
@@ -119,14 +116,13 @@ var app = new Vue({
       },
       
       uniqueId(){
-        for(let event in this.events){
+        for(let event of this.events){
           if(event.id == this.id){
             return false;
           }
         }
         return true;
       }
-
     }
-  })
+  });
 
