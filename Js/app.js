@@ -71,9 +71,9 @@ var app = new Vue({
 
         validRelatedNames(event){
             let newEvents = [];
-            for(let name of this.names){
-                if(name != event.name){
-                    newEvents.push(name);
+            for(let i = 0; i < this.events.length; i++){
+                if(this.names[i] != event.name && !this.events[i].related_events.includes(event.name)){
+                    newEvents.push(this.names[i]);
                 }
             }
             return newEvents;
