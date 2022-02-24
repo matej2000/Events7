@@ -28,8 +28,6 @@ let myId = doc(ref).id;
 const querySnapshot = await getDocs(collection(db, "Event"));
 let events = [];
 querySnapshot.forEach((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-  //console.log(doc.id, " => ", doc.data());
   let event = doc.data();
   event[id] = doc.id;
   events.push(event);
@@ -41,10 +39,6 @@ var app = new Vue({
     data () {
       return {
         events: events,
-        /*events: [
-            { id:"1", name:"click-event", description:"blablabala",type:"app",priority:"0", related_events: ""},
-            { id:"2", name:"click-event2", description:"blablabala",type:"app",priority:"0", related_events: "assa"}
-          ],*/
         related: [],
         searchEvents: [
             { id:"1", name:"click-event", description:"blablabala",type:"app",priority:"0", related_events: ""},
@@ -82,6 +76,10 @@ var app = new Vue({
             case 2: this.descriptionErr = "Invalid description"; break;
           }
         }
+
+        if(!this.uniqueId()){
+          this.idErr = "Id not unique";
+        }
         return index.length == 0;
       },
 
@@ -118,6 +116,15 @@ var app = new Vue({
 
       isEmpty(str){
         return !str || str.length === 0 ;
+      },
+      
+      uniqueId(){
+        for(let event in this.events){
+          if(event.id == this.id){
+            return false;
+          }
+        }
+        return true;
       }
 
     }

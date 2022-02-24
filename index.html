@@ -33,6 +33,24 @@
 <body>
     
     <div id="app" v-cloak>
+
+        <!--Navbar-->
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+            <a class="navbar-brand" href="index.html">Events7</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/newEvent.html">New event</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
         
         <div class="container">
         
@@ -57,7 +75,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="event in searchEvents" :key="event.id">
+                        <tr v-for="event in page" :key="event.id">
                             <template v-if="!changes[event.id]">
                                 <td>{{event.id}}</td>
                                 <td>{{event.name}}</td>
@@ -135,7 +153,26 @@
                         </tr>
                     </tbody>
                 </table>
+                <div v-if="page.length == 0">
+                    <p>No entries found.</p>
+                </div>
             </div>
+            <nav aria-label="pagenation">
+                <ul class="pagination">
+                  <li class="page-item" v-bind:class="{ disabled: pageNumber==1}">
+                    <a class="page-link" tabindex="-1" @click="previousPage()">Previous</a>
+                  </li>
+                  <!--<li class="page-item active"><a class="page-link">1 <span class="sr-only">(current)</span></a></li>
+                  <li class="page-item ">
+                    <a class="page-link">2 <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="page-item"><a class="page-link">3</a></li>-->
+                  <li class="page-item"  v-bind:class="{ disabled: pageNumber == maxPages()}">
+                    <a class="page-link" @click="nextPage()">Next</a>
+                  </li>
+                  <li><multiselect class="bg-transparent" v-model="eventsOnPage" @input="eventsOnPageChange" deselect-label="Can't remove this value" :options="pageSelect" :searchable="false" :allow-empty="false"></multiselect></li>
+                </ul>
+              </nav>
         </div>
     </div>
 

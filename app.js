@@ -39,24 +39,27 @@ var app = new Vue({
     el: '#app',
     components: { Multiselect: window.VueMultiselect.default },
     data () {
-      return {
-    changes: changes,
-    /*events: [
-        { id:"1", name:"click-event", description:"blablabala",type:"app",priority:"0", related_events: ""},
-        { id:"2", name:"click-event2", description:"blablabala",type:"app",priority:"0", related_events: "assa"}
-    ],*/
-    events: events,
-    searchEvents: events,
-    priorities: [0,1,2,3,4,5,6,7,8,9,10],
-    types: ["crosspromo", "liveops", "app", "ads"],
-    names: names,
-    search: ""
+        return {
+            changes: changes,
+            /*events: [
+                { id:"1", name:"click-event", description:"blablabala",type:"app",priority:"0", related_events: ""},
+                { id:"2", name:"click-event2", description:"blablabala",type:"app",priority:"0", related_events: "assa"}
+            ],*/
+            events: events,
+            searchEvents: events,
+            priorities: [0,1,2,3,4,5,6,7,8,9,10],
+            types: ["crosspromo", "liveops", "app", "ads"],
+            names: names,
+            search: "",
+            pageNumber: 1,
+            eventsOnPage: 10,
+            page: events.slice(0, 10),
+            pageSelect: [3,10,25,50,100]
         
         };
     },
     methods: {
         edit(id){
-            console.log(id);
             this.changes[id] = true;
         },
 
@@ -73,6 +76,7 @@ var app = new Vue({
                 this.searchEvents.push(event);
               }
             }
+            this.eventsOnPageChange();
         },
 
         /*relatedNames(event){
@@ -131,6 +135,30 @@ var app = new Vue({
                 }
             }
 
+        },
+
+        eventsOnPageChange(){
+            this.pageNumber = 1;
+            this.updatePage();
+        },
+
+        updatePage(actionName){
+            let firstEvent = (this.pageNumber-1) * this.eventsOnPage;
+            this.page = this.searchEvents.slice(firstEvent, firstEvent + this.eventsOnPage);
+        },
+
+        nextPage(){
+            this.pageNumber++;
+            this.updatePage();
+        },
+
+        previousPage(){
+            this.pageNumber -= 1;
+            this.updatePage();
+        },
+
+        maxPages(){
+            return Math.ceil(this.searchEvents.length/this.eventsOnPage);
         }
 
     }
